@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>My Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #0f0f0f;
+      color: #fff;
+    }
+
+    header {
+      position: fixed;
+      width: 100%;
+      top: 0;
+      background: rgba(0,0,0,0.8);
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      padding: 15px;
+      z-index: 1000;
+    }
+
+    header a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    header a:hover {
+      color: #00ffd5;
+    }
+
+    section {
+      min-height: auto;
+      padding: 60px 40px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 40px;
+    }
+
+    /* ABOUT */
+    .about {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: 30px;
+      max-width: 1000px;
+      margin: 0;
+    }
+
+    .about-photo {
+      flex: 0 0 220px;
+      min-width: 180px;
+    }
+
+    .about-photo img {
+      width: 100%;
+      border-radius: 14px;
+      object-fit: cover;
+    }
+
+    .about-details {
+      flex: 1;
+      min-width: 250px;
+    }
+
+    .about p,
+    .about-info p {
+      line-height: 1.6;
+      opacity: 0.8;
+    }
+
+    .about-info {
+      display: grid;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    @media (max-width: 800px) {
+      .about {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .about-details,
+      .about-photo {
+        width: 100%;
+      }
+    }
+
+    /* PHOTO */
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 15px;
+    }
+
+    .photo-grid img {
+      width: 100%;
+      border-radius: 10px;
+      transition: 0.3s;
+    }
+
+    .photo-grid img:hover {
+      transform: scale(1.05);
+    }
+
+    /* VIDEO */
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 24px;
+    }
+
+    iframe {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      min-height: 320px;
+      height: auto;
+      border-radius: 10px;
+    }
+
+    /* SMOOTH SCROLL */
+    html {
+      scroll-behavior: smooth;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <header>
+    <a href="#about">About</a>
+    <a href="#photo">Photo</a>
+    <a href="#video">Video</a>
+  </header>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about">
+        <h1>About Me</h1>
+        <p>
+          Xin chào, Em tên là <strong>Thanh Tú</strong>, một video editor dạng moment và đang muốn học hỏi và phát triển kỹ năng mới.
+          <br>
+          Em có kinh nghiệm sử dụng Premiere Pro, Capcut.
+        </p> 
+      <div class="about-photo">
+        <img src="img/another_blur.png" alt="Ảnh đại diện">
+      </div>
+
+      <div class="about-details">
+        
+
+        <div class="about-info">
+          <p><strong>Họ và tên:</strong> Tô Thanh Tú</p>
+          <p><strong>Tuổi:</strong> 21</p>
+          <p><strong>Kinh nghiệm:</strong> Có 4 tháng kinh nghiệm về mảng moment video</p>
+          <p><strong>Kỹ năng:</strong> Premiere Pro, Capcut</p>
+          <p><strong>Sở thích:</strong> Quay video, chụp ảnh phong cảnh</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHOTO -->
+  <section id="photo">
+    <h1>My Photos</h1>
+    <div class="photo-grid">
+      <img src="img/AOT_color.jpg">
+      <img src="img/collegt art.png">
+      <img src="img/color_halftone copy.png">
+      <img src="img/spotify_vol1.png">
+      <img src="img/hustle copy.png" alt="">
+      <img src="img/headphone.png" alt="">
+    </div>
+  </section>
+
+  <!-- VIDEO -->
+  <section id="video">
+    <h1>My Videos</h1>
+    <div class="video-grid">
+      <iframe 
+  src="https://www.youtube.com/embed/O3FLmpN1EKU"
+  title="My video"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen>
+</iframe>
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/MPnwEg7bWZg?si=cGrChfigXPITYdh9" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+  </section>
+
+</body>
+</html>
