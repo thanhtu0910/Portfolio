@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>My Portfolio</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
   <style>
     * {
@@ -162,6 +163,34 @@
       scroll-behavior: smooth;
     }
 
+    .social-links {
+  margin-top: 20px;
+  display: flex;
+  gap: 20px;
+}
+
+.social-links a {
+  font-size: 26px;
+  color: white;
+  transition: 0.3s;
+}
+
+.social-links a:hover {
+  transform: scale(1.2);
+}
+
+/* màu riêng từng nền tảng */
+.social-links a:nth-child(1):hover {
+  color: #1877f2; /* Facebook */
+}
+
+.social-links a:nth-child(2):hover {
+  color: #e1306c; /* Instagram */
+}
+
+.social-links a:nth-child(3):hover {
+  color: #25f4ee; /* TikTok */
+}
   </style>
 </head>
 
@@ -196,9 +225,21 @@
           <p><strong>Kinh nghiệm:</strong> Có 4 tháng kinh nghiệm về mảng edit moment video</p>
           <p><strong>Kỹ năng:</strong> Premiere Pro, Capcut</p>
           <p><strong>Sở thích:</strong> Quay video, chụp ảnh phong cảnh</p>
+          <div class="social-links">
+  <a href="https://www.facebook.com/tu.thanh.798806" target="_blank">
+    <i class="fab fa-facebook"></i>
+  </a>
+  <a href="https://www.instagram.com/3t.thanhtu/" target="_blank">
+    <i class="fab fa-instagram"></i>
+  </a>
+  <a href="https://www.tiktok.com/@threet005?is_from_webapp=1&sender_device=pc" target="_blank">
+    <i class="fab fa-tiktok"></i>
+  </a>
+</div>
         </div>
       </div>
     </div>
+    
   </section>
 
   <!-- PHOTO -->
