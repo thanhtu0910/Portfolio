@@ -125,10 +125,41 @@
       width: 100%;
       border-radius: 10px;
       transition: 0.3s;
+      cursor: pointer;
     }
 
     .photo-grid img:hover {
       transform: scale(1.05);
+    }
+
+    .image-modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 2000;
+      padding: 20px;
+    }
+
+    .image-modal.active {
+      display: flex;
+    }
+
+    .image-modal-content {
+      max-width: 95%;
+      max-height: 95%;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+    }
+
+    .image-modal-content img {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 95vh;
     }
 
     @media (max-width: 900px) {
@@ -271,6 +302,12 @@
     </div>
   </section>
 
+  <div class="image-modal" id="imageModal">
+    <div class="image-modal-content" id="imageModalContent">
+      <img src="" alt="Image preview" id="modalImage">
+    </div>
+  </div>
+
   <!-- VIDEO -->
   <section id="video">
     <h1>My Videos</h1>
@@ -285,5 +322,25 @@
     </div>
   </section>
 
+  <script>
+    const imageModal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    const modalContent = document.getElementById('imageModalContent');
+
+    document.querySelectorAll('.photo-grid img').forEach(img => {
+      img.addEventListener('click', () => {
+        modalImage.src = img.src;
+        modalImage.alt = img.alt || 'Ảnh xem lớn';
+        imageModal.classList.add('active');
+      });
+    });
+
+    imageModal.addEventListener('click', event => {
+      if (event.target === imageModal) {
+        imageModal.classList.remove('active');
+        modalImage.src = '';
+      }
+    });
+  </script>
 </body>
 </html>
