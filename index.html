@@ -102,6 +102,18 @@
     }
 
     /* PHOTO */
+    .photo-section {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 40px;
+      margin-top: 30px;
+    }
+
+    .photo-group h2 {
+      font-size: 26px;
+      margin-bottom: 18px;
+    }
+
     .photo-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -116,6 +128,12 @@
 
     .photo-grid img:hover {
       transform: scale(1.05);
+    }
+
+    @media (max-width: 900px) {
+      .photo-section {
+        grid-template-columns: 1fr;
+      }
     }
 
     @media (max-width: 600px) {
@@ -186,13 +204,29 @@
   <!-- PHOTO -->
   <section id="photo">
     <h1>My Photos</h1>
-    <div class="photo-grid">
-      <img src="img/AOT_color.jpg">
-      <img src="img/collegt art.png">
-      <img src="img/color_halftone copy.png">
-      <img src="img/spotify_vol1.png">
-      <img src="img/hustle copy.png" alt="">
-      <img src="img/headphone.png" alt="">
+    <div class="photo-section">
+      <div class="photo-group">
+        <h2>Personal Gallery</h2>
+        <div class="photo-grid">
+          <img src="photoshoot/1.png" alt="Ảnh raw">
+          <img src="photoshoot/2 copy.png" alt="Ảnh raw">
+          <img src="photoshoot/4.png" alt="Ảnh raw">
+          <img src="photoshoot/IMG_0591.JPG" alt="Ảnh raw">
+          <img src="photoshoot/IMG_0728.JPG" alt="Ảnh raw">
+        </div>
+      </div>
+
+      <div class="photo-group">
+        <h2>Edited Photos</h2>
+        <div class="photo-grid">
+          <img src="img/spotify_vol1.png" alt="Ảnh đã edit 1">
+          <img src="img/hustle copy.png" alt="Ảnh đã edit 2">
+          <img src="img/headphone.png" alt="Ảnh đã edit 3">
+          <img src="img/AOT_color.jpg" alt="Thư viện ảnh 1">
+          <img src="img/collegt art.png" alt="Thư viện ảnh 2">
+          <img src="img/color_halftone copy.png" alt="Thư viện ảnh 3">
+        </div>
+      </div>
     </div>
   </section>
 
