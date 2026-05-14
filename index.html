@@ -416,6 +416,95 @@
       color: var(--accent);
     }
 
+    /* ---- PHOTO TABS ---- */
+    .photo-tabs {
+      display: flex;
+      gap: 0;
+      margin-bottom: 40px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .photo-tab {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 16px 36px 16px 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--muted);
+      position: relative;
+      transition: color 0.25s;
+    }
+
+    .photo-tab::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+
+    .photo-tab.active { color: var(--text); }
+    .photo-tab.active::after { width: calc(100% - 36px); }
+    .photo-tab:hover { color: var(--text); }
+
+    .tab-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 13px;
+      letter-spacing: 2px;
+      color: var(--accent);
+      opacity: 0.5;
+      transition: opacity 0.25s;
+    }
+
+    .photo-tab.active .tab-num { opacity: 1; }
+
+    .tab-label {
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .photo-panel {
+      display: none;
+      animation: fadeInPanel 0.4s ease;
+    }
+
+    .photo-panel.active { display: block; }
+
+    @keyframes fadeInPanel {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Placeholder for personal gallery */
+    .photo-placeholder {
+      min-height: 200px;
+    }
+
+    .placeholder-inner {
+      width: 100%;
+      height: 100%;
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: var(--muted);
+      border: 1px dashed rgba(255,255,255,0.12);
+      border-radius: 4px;
+    }
+
+    .placeholder-inner i { font-size: 24px; opacity: 0.4; }
+    .placeholder-inner span { font-family: 'Syne', sans-serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.4; }
+
     /* ---- VIDEO GRID ---- */
     .video-grid {
       display: grid;
@@ -442,78 +531,6 @@
       aspect-ratio: 16/9;
       border: none;
       display: block;
-    }
-
-    .drive-thumb {
-      width: 100%;
-      aspect-ratio: 16/9;
-      position: relative;
-      background: var(--bg3);
-      overflow: hidden;
-      display: block;
-    }
-
-    .drive-embed {
-      width: 100%;
-      height: 100%;
-      border: none;
-      display: block;
-      pointer-events: none;
-    }
-
-    .drive-overlay {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 14px;
-      background: rgba(8,8,8,0.6);
-      transition: background 0.3s;
-    }
-
-    .video-card:hover .drive-overlay {
-      background: rgba(8,8,8,0.3);
-    }
-
-    .play-btn {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      background: var(--accent2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 22px;
-      text-decoration: none;
-      transition: transform 0.3s, background 0.3s;
-      box-shadow: 0 0 30px rgba(255,71,87,0.4);
-    }
-
-    .play-btn:hover {
-      transform: scale(1.12);
-      background: #ff2f42;
-    }
-
-    .open-drive-btn {
-      font-family: 'Syne', sans-serif;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.5);
-      text-decoration: none;
-      padding: 6px 14px;
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 2px;
-      transition: all 0.2s;
-    }
-
-    .open-drive-btn:hover {
-      color: var(--accent);
-      border-color: var(--accent);
     }
 
     .video-info {
@@ -670,36 +687,102 @@
 <section id="photo" class="section-wrap">
   <div class="section-header">
     <div>
-      <div class="section-label">Work samples</div>
+      <div class="section-label">Visual Work</div>
       <h2 class="section-title">My Photos</h2>
     </div>
     <div class="section-count">04</div>
   </div>
 
-  <div class="photo-masonry">
-    <div class="photo-item">
-      <img src="img/spotify_vol1.png" alt="Spotify Vol 1">
-      <div class="photo-item-overlay">
-        <span class="photo-item-label">Spotify Vol.1</span>
+  <!-- Photo Tabs -->
+  <div class="photo-tabs">
+    <button class="photo-tab active" data-tab="edited">
+      <span class="tab-num">01</span>
+      <span class="tab-label">Edited Photos</span>
+    </button>
+    <button class="photo-tab" data-tab="personal">
+      <span class="tab-num">02</span>
+      <span class="tab-label">Personal Gallery</span>
+    </button>
+  </div>
+
+  <!-- Edited Photos -->
+  <div class="photo-panel active" id="tab-edited">
+    <div class="photo-masonry">
+      <div class="photo-item">
+        <img src="img/spotify_vol1.png" alt="Spotify Vol 1">
+        <div class="photo-item-overlay">
+          <span class="photo-item-label">Spotify Vol.1</span>
+        </div>
+      </div>
+      <div class="photo-item">
+        <img src="img/headphone.png" alt="Headphone">
+        <div class="photo-item-overlay">
+          <span class="photo-item-label">Headphone</span>
+        </div>
+      </div>
+      <div class="photo-item">
+        <img src="img/collegt art.png" alt="College Art">
+        <div class="photo-item-overlay">
+          <span class="photo-item-label">College Art</span>
+        </div>
+      </div>
+      <div class="photo-item">
+        <img src="img/color_halftone copy.png" alt="Color Halftone">
+        <div class="photo-item-overlay">
+          <span class="photo-item-label">Halftone</span>
+        </div>
       </div>
     </div>
-    <div class="photo-item">
-      <img src="img/headphone.png" alt="Headphone">
-      <div class="photo-item-overlay">
-        <span class="photo-item-label">Headphone</span>
-      </div>
-    </div>
-    <div class="photo-item">
-      <img src="img/AOT_color.jpg" alt="AOT Color">
-      <div class="photo-item-overlay">
-        <span class="photo-item-label">AOT Color</span>
-      </div>
-    </div>
-    <div class="photo-item">
-      <img src="img/color_halftone copy.png" alt="Color Halftone">
-      <div class="photo-item-overlay">
-        <span class="photo-item-label">Halftone</span>
-      </div>
+  </div>
+
+  <!-- Personal Gallery -->
+  <div class="photo-panel" id="tab-personal">
+    <div class="photo-masonry">
+      <!-- Thêm ảnh personal của bạn vào đây -->
+      <div class="photo-item">
+  <img src="photoshoot/4.png" alt="...">
+  <div class="photo-item-overlay">
+    <span class="photo-item-label">Tên ảnh</span>
+  </div>
+</div>
+      <!-- <div class="photo-item photo-placeholder">
+        <div class="placeholder-inner">
+          <i class="fas fa-camera"></i>
+          <span><img src="photoshoot/2 copy.png" alt=""></span>
+        </div>
+      </div> -->
+      <div class="photo-item">
+  <img src="photoshoot/2 copy.png" alt="...">
+  <div class="photo-item-overlay">
+    <span class="photo-item-label">Tên ảnh</span>
+  </div>
+</div>
+        <!-- <div class="photo-item photo-placeholder">
+          <div class="placeholder-inner">
+            <i class="fas fa-camera"></i>
+            <span><img src="photoshoot/fog.png" alt=""></span>
+          </div>
+      </div> -->
+            <div class="photo-item">
+  <img src="photoshoot/fog.png" alt="...">
+  <div class="photo-item-overlay">
+    <span class="photo-item-label">Tên ảnh</span>
+  </div>
+</div>
+
+      <!-- <div class="photo-item photo-placeholder">
+        <div class="placeholder-inner">
+          <i class="fas fa-camera"></i>
+          <span><img src="photoshoot/1.png" alt=""></span>
+        </div>
+      </div> -->
+            <div class="photo-item">
+  <img src="photoshoot/1.png" alt="...">
+  <div class="photo-item-overlay">
+    <span class="photo-item-label">Tên ảnh</span>
+  </div>
+</div>
+      
     </div>
   </div>
 </section>
@@ -730,63 +813,31 @@
       </div>
     </div>
 
-    <!-- Drive 1: dung /preview de embed -->
+    <!-- Drive 1: embed trực tiếp -->
     <div class="video-card">
-      <div class="drive-thumb">
-        <iframe
-          class="drive-embed"
-          src="https://drive.google.com/file/d/1S_syUCVtulCocus7bd7qxRFWdPzH_alO/preview"
-          allow="autoplay"
-          allowfullscreen>
-        </iframe>
-        <div class="drive-overlay">
-          <a class="play-btn"
-             href="https://drive.google.com/file/d/1S_syUCVtulCocus7bd7qxRFWdPzH_alO/view?usp=sharing"
-             target="_blank"
-             aria-label="Xem video">
-            <i class="fas fa-play"></i>
-          </a>
-          <a class="open-drive-btn"
-             href="https://drive.google.com/file/d/1S_syUCVtulCocus7bd7qxRFWdPzH_alO/view?usp=sharing"
-             target="_blank">
-            Mo tren Drive
-          </a>
-        </div>
-      </div>
+      <iframe
+        src="https://drive.google.com/file/d/1S_syUCVtulCocus7bd7qxRFWdPzH_alO/preview"
+        allow="autoplay; fullscreen"
+        allowfullscreen>
+      </iframe>
       <div class="video-info">
-        <div class="video-num">02 / GOOGLE DRIVE</div>
+        <div class="video-num">02 / TALKING HEAD</div>
         <div class="video-title">Talking Head</div>
         <div class="video-desc">Subtitle + SFX — talking head edit</div>
       </div>
     </div>
 
-    <!-- Drive 2 -->
+    <!-- Drive 2: embed trực tiếp -->
     <div class="video-card">
-      <div class="drive-thumb">
-        <iframe
-          class="drive-embed"
-          src="https://drive.google.com/file/d/1IHfDp71n9ejlvRHuCU4Tna1Kar6u3ull/preview"
-          allow="autoplay"
-          allowfullscreen>
-        </iframe>
-        <div class="drive-overlay">
-          <a class="play-btn"
-             href="https://drive.google.com/file/d/1IHfDp71n9ejlvRHuCU4Tna1Kar6u3ull/view?usp=sharing"
-             target="_blank"
-             aria-label="Xem video">
-            <i class="fas fa-play"></i>
-          </a>
-          <a class="open-drive-btn"
-             href="https://drive.google.com/file/d/1IHfDp71n9ejlvRHuCU4Tna1Kar6u3ull/view?usp=sharing"
-             target="_blank">
-            Mo tren Drive
-          </a>
-        </div>
-      </div>
+      <iframe
+        src="https://drive.google.com/file/d/1IHfDp71n9ejlvRHuCU4Tna1Kar6u3ull/preview"
+        allow="autoplay; fullscreen"
+        allowfullscreen>
+      </iframe>
       <div class="video-info">
-        <div class="video-num">03 / GOOGLE DRIVE</div>
+        <div class="video-num">03 / STORYTELLING</div>
         <div class="video-title">Storytelling</div>
-        <div class="video-desc">Edit nang cao — advanced cut</div>
+        <div class="video-desc">Edit nâng cao — advanced cut</div>
       </div>
     </div>
 
@@ -807,16 +858,13 @@
     dot.style.top  = e.clientY + 'px';
   });
 
-  // Click Drive overlay de play
-  document.querySelectorAll('.drive-overlay').forEach(overlay => {
-    overlay.addEventListener('click', function(e) {
-      if (e.target.closest('a')) return;
-      const card = this.closest('.video-card');
-      const iframe = card.querySelector('.drive-embed');
-      // Reload iframe de bat dau play
-      iframe.src = iframe.src;
-      this.style.opacity = '0';
-      this.style.pointerEvents = 'none';
+  // Photo tab switching
+  document.querySelectorAll('.photo-tab').forEach(tab => {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.photo-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.photo-panel').forEach(p => p.classList.remove('active'));
+      this.classList.add('active');
+      document.getElementById('tab-' + this.dataset.tab).classList.add('active');
     });
   });
 </script>
