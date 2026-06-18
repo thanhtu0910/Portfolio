@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>To Thanh Tu | Video Editor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #080808;
+      --bg2: #111111;
+      --bg3: #1a1a1a;
+      --accent: #e8ff47;
+      --accent2: #ff4757;
+      --text: #f0f0f0;
+      --muted: #888;
+      --border: rgba(255,255,255,0.07);
+    }
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ---- NOISE OVERLAY ---- */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.4;
+    }
+
+    /* ---- HEADER ---- */
+    header {
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 48px;
+      background: transparent;
+      border-bottom: 1px solid transparent;
+      transition: background 0.35s ease, border-color 0.35s ease, backdrop-filter 0.35s ease;
+    }
+
+    header.scrolled {
+      background: rgba(8,8,8,0.85);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 3px;
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    nav {
+      display: flex;
+      gap: 36px;
+      align-items: center;
+    }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      transition: color 0.25s;
+      position: relative;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover { color: var(--accent); }
+    nav a:hover::after { width: 100%; }
+
+    /* ---- HERO BAND ---- */
+    .hero-band {
+      padding: 6px 48px;
+      background: var(--accent);
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .ticker-inner {
+      display: inline-block;
+      animation: ticker 20s linear infinite;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 14px;
+      letter-spacing: 4px;
+      color: #080808;
+    }
+
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ---- HERO VIDEO SECTION ---- */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 560px;
+      width: 100%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(15%) brightness(0.55) contrast(1.05);
+      z-index: 0;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(8,8,8,0.55) 0%, rgba(8,8,8,0.15) 40%, rgba(8,8,8,0.85) 100%);
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 0 24px;
+    }
+
+    .hero-label {
+      justify-content: center;
+      margin-bottom: 22px;
+    }
+
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(72px, 14vw, 180px);
+      line-height: 0.9;
+      letter-spacing: -2px;
+    }
+
+    .hero-title span { color: var(--accent); }
+
+    .hero-role {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      letter-spacing: 4px;
+      font-size: 13px;
+      color: #ddd;
+      margin-top: 22px;
+      text-transform: uppercase;
+    }
+
+    .hero-sound-btn {
+      position: absolute;
+      bottom: 28px;
+      right: 28px;
+      z-index: 3;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.25);
+      background: rgba(0,0,0,0.35);
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      backdrop-filter: blur(6px);
+      transition: all 0.25s ease;
+    }
+
+    .hero-sound-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255,255,255,0.65);
+      font-family: 'Syne', sans-serif;
+      font-size: 11px;
+      letter-spacing: 3px;
+      animation: heroScrollBounce 2s infinite;
+    }
+
+    @keyframes heroScrollBounce {
+      0%, 100% { transform: translate(-50%, 0); }
+      50% { transform: translate(-50%, 8px); }
+    }
+
+    @media (max-width: 600px) {
+      .hero-sound-btn { width: 40px; height: 40px; bottom: 20px; right: 16px; }
+      .hero-scroll { bottom: 18px; }
+    }
+
+    /* ---- ABOUT SECTION ---- */
+    #about {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+
+    .about-left {
+      padding: 80px 60px 80px 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-right: 1px solid var(--border);
+    }
+
+    .section-label {
+      font-family: 'Syne', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-label::before {
+      content: '';
+      display: inline-block;
+      width: 28px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    .hero-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(64px, 8vw, 110px);
+      line-height: 0.92;
+      letter-spacing: -1px;
+      margin-bottom: 32px;
+    }
+
+    .hero-name span {
+      color: var(--accent);
+      display: block;
+    }
+
+    .hero-bio {
+      font-size: 16px;
+      line-height: 1.8;
+      color: #aaa;
+      max-width: 420px;
+      margin-bottom: 40px;
+    }
+
+    .stats-row {
+      display: flex;
+      gap: 40px;
+      margin-bottom: 44px;
+      padding: 24px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .stat-item {}
+
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 42px;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 1px;
+      margin-top: 4px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .skills-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+
+    .skill-tag {
+      padding: 7px 18px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      font-size: 13px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 1px;
+      transition: all 0.25s;
+    }
+
+    .skill-tag:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .social-row {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .social-row a {
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 16px;
+      text-decoration: none;
+      transition: all 0.25s;
+    }
+
+    .social-row a:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(232,255,71,0.05);
+    }
+
+    .about-right {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 48px;
+      background: var(--bg2);
+      overflow: hidden;
+    }
+
+    .about-right::before {
+      content: 'EDITOR';
+      position: absolute;
+      bottom: -20px;
+      right: -10px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 160px;
+      color: rgba(255,255,255,0.02);
+      pointer-events: none;
+      letter-spacing: -4px;
+    }
+
+    .photo-frame {
+      position: relative;
+      width: 340px;
+      max-width: 100%;
+    }
+
+    .photo-frame::before {
+      content: '';
+      position: absolute;
+      top: -12px;
+      left: -12px;
+      right: 12px;
+      bottom: 12px;
+      border: 1px solid var(--accent);
+      border-radius: 4px;
+      z-index: 0;
+    }
+
+    .photo-frame img {
+      position: relative;
+      width: 100%;
+      border-radius: 4px;
+      display: block;
+      z-index: 1;
+      filter: grayscale(20%);
+      transition: filter 0.4s;
+    }
+
+    .photo-frame:hover img { filter: grayscale(0%); }
+
+    .photo-badge {
+      position: absolute;
+      bottom: -20px;
+      right: -20px;
+      background: var(--accent);
+      color: #080808;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 13px;
+      letter-spacing: 2px;
+      padding: 12px 18px;
+      border-radius: 2px;
+      z-index: 2;
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    /* ---- SECTION COMMON ---- */
+    .section-wrap {
+      padding: 100px 48px;
+      border-top: 1px solid var(--border);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 60px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(48px, 6vw, 80px);
+      letter-spacing: -1px;
+      line-height: 1;
+    }
+
+    .section-count {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 80px;
+      color: rgba(255,255,255,0.04);
+      line-height: 1;
+    }
+
+    /* ---- PHOTO GRID ---- */
+    .photo-masonry {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: auto;
+      gap: 12px;
+    }
+
+    .photo-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 4px;
+      cursor: pointer;
+      background: var(--bg3);
+    }
+
+    .photo-item:nth-child(1) {
+      grid-column: span 2;
+      grid-row: span 2;
+    }
+
+    .photo-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s ease, filter 0.4s ease;
+      filter: grayscale(15%);
+      min-height: 180px;
+    }
+
+    .photo-item:hover img {
+      transform: scale(1.06);
+      filter: grayscale(0%);
+    }
+
+    .photo-item-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      display: flex;
+      align-items: flex-end;
+      padding: 16px;
+    }
+
+    .photo-item:hover .photo-item-overlay { opacity: 1; }
+
+    .photo-item-label {
+      font-family: 'Syne', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    /* ---- PHOTO TABS ---- */
+    .photo-tabs {
+      display: flex;
+      gap: 0;
+      margin-bottom: 40px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .photo-tab {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 16px 36px 16px 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--muted);
+      position: relative;
+      transition: color 0.25s;
+    }
+
+    .photo-tab::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+
+    .photo-tab.active { color: var(--text); }
+    .photo-tab.active::after { width: calc(100% - 36px); }
+    .photo-tab:hover { color: var(--text); }
+
+    .tab-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 13px;
+      letter-spacing: 2px;
+      color: var(--accent);
+      opacity: 0.5;
+      transition: opacity 0.25s;
+    }
+
+    .photo-tab.active .tab-num { opacity: 1; }
+
+    .tab-label {
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .photo-panel {
+      display: none;
+      animation: fadeInPanel 0.4s ease;
+    }
+
+    .photo-panel.active { display: block; }
+
+    @keyframes fadeInPanel {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Placeholder for personal gallery */
+    .photo-placeholder {
+      min-height: 200px;
+    }
+
+    .placeholder-inner {
+      width: 100%;
+      height: 100%;
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: var(--muted);
+      border: 1px dashed rgba(255,255,255,0.12);
+      border-radius: 4px;
+    }
+
+    .placeholder-inner i { font-size: 24px; opacity: 0.4; }
+    .placeholder-inner span { font-family: 'Syne', sans-serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.4; }
+
+    /* ---- VIDEO GRID ---- */
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .video-card {
+      background: var(--bg2);
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      transition: border-color 0.3s, transform 0.3s;
+      position: relative;
+    }
+
+    .video-card:hover {
+      border-color: rgba(232,255,71,0.3);
+      transform: translateY(-4px);
+    }
+
+    .video-card iframe {
+      width: 100%;
+      aspect-ratio: 16/9;
+      border: none;
+      display: block;
+    }
+
+    .video-info {
+      padding: 18px 20px;
+    }
+
+    .video-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 11px;
+      letter-spacing: 3px;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .video-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .video-desc {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* ---- FOOTER ---- */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 36px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px;
+      letter-spacing: 3px;
+      color: var(--accent);
+    }
+
+    .footer-copy {
+      font-size: 12px;
+      color: var(--muted);
+      font-family: 'Syne', sans-serif;
+    }
+
+    /* ---- CURSOR DOT ---- */
+    .cursor-dot {
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      background: var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s;
+      mix-blend-mode: difference;
+    }
+
+    /* ---- SEE MORE BUTTON ---- */
+    .see-more-wrap {
+      display: flex;
+      justify-content: center;
+      margin-top: 56px;
+    }
+
+    .see-more-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+      position: relative;
+      transition: border-color 0.3s ease;
+      background: transparent;
+    }
+
+    .see-more-btn:hover {
+      border-color: var(--accent);
+    }
+
+    .see-more-text {
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--text);
+      padding: 18px 32px;
+      transition: color 0.3s ease, background 0.3s ease;
+      position: relative;
+      z-index: 1;
+    }
+
+    .see-more-btn:hover .see-more-text {
+      color: #080808;
+      background: var(--accent);
+    }
+
+    .see-more-icon {
+      padding: 18px 20px;
+      background: rgba(255,255,255,0.04);
+      border-left: 1px solid var(--border);
+      color: var(--accent);
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+
+    .see-more-btn:hover .see-more-icon {
+      background: rgba(232,255,71,0.12);
+      border-color: var(--accent);
+    }
+
+    .see-more-arrow {
+      padding: 18px 20px;
+      background: var(--accent);
+      color: #080808;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      transition: transform 0.3s ease, padding 0.3s ease;
+    }
+
+    .see-more-btn:hover .see-more-arrow {
+      transform: translateX(3px);
+    }
+
+    /* ---- LIGHTBOX ---- */
+    .lightbox-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.92);
+      z-index: 100000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: 24px;
+    }
+
+    .lightbox-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .lightbox-inner {
+      position: relative;
+      max-width: 90vw;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .lightbox-inner img {
+      max-width: 90vw;
+      max-height: 85vh;
+      object-fit: contain;
+      border-radius: 4px;
+      box-shadow: 0 0 60px rgba(0,0,0,0.8);
+      transform: scale(0.92);
+      transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+      display: block;
+    }
+
+    .lightbox-overlay.active .lightbox-inner img {
+      transform: scale(1);
+    }
+
+    .lightbox-label {
+      margin-top: 14px;
+      font-family: 'Syne', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      opacity: 0.8;
+    }
+
+    .lightbox-close {
+      position: fixed;
+      top: 20px;
+      right: 24px;
+      width: 44px;
+      height: 44px;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 2px;
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      z-index: 100001;
+    }
+
+    .lightbox-close:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(232,255,71,0.08);
+    }
+
+    .photo-item-overlay::after {
+      content: '\f00e';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -60%);
+      font-size: 22px;
+      color: rgba(255,255,255,0.6);
+      transition: transform 0.3s ease, opacity 0.3s;
+      opacity: 0;
+    }
+
+    .photo-item:hover .photo-item-overlay::after {
+      opacity: 1;
+      transform: translate(-50%, -50%);
+    }
+
+    /* ---- RESPONSIVE ---- */
+    @media (max-width: 900px) {
+      header { padding: 16px 24px; }
+      #about { grid-template-columns: 1fr; }
+      .about-right {
+        display: flex;
+        min-height: 380px;
+        padding: 60px 24px;
+      }
+      .about-left {
+        padding: 60px 24px 40px;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+      .photo-frame { width: 240px; }
+      .section-wrap { padding: 70px 24px; }
+      .photo-masonry { grid-template-columns: repeat(2, 1fr); }
+      .photo-item:nth-child(1) { grid-column: span 2; }
+      .video-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 10px; text-align: center; }
+    }
+
+    @media (max-width: 600px) {
+      header { padding: 14px 16px; }
+      nav { gap: 20px; }
+      .stats-row { gap: 24px; }
+      .about-right { min-height: 300px; padding: 48px 24px; }
+      .photo-frame { width: 190px; }
+      .photo-frame::before { top: -8px; left: -8px; right: 8px; bottom: 8px; }
+      .photo-badge { bottom: -14px; right: -14px; font-size: 11px; padding: 10px 14px; }
+      .lightbox-inner img { max-width: 95vw; max-height: 80vh; }
+      .see-more-text { font-size: 11px; letter-spacing: 2px; padding: 14px 20px; }
+      .see-more-icon, .see-more-arrow { padding: 14px 14px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Cursor -->
+<div class="cursor-dot" id="cursorDot"></div>
+
+<!-- Header -->
+<header id="siteHeader">
+  <a href="#hero" class="logo">T.THANH TU</a>
+  <nav>
+    <a href="#hero">Home</a>
+    <a href="#about">About</a>
+    <a href="#photo">Photo</a>
+    <a href="#video">Video</a>
+  </nav>
+</header>
+
+<!-- Hero Video -->
+<section id="hero" class="hero">
+  <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="img/selfie.jpg">
+    <source src="../vid/_introduce_4.mp4" type="video/mp4">
+  </video>
+  <div class="hero-overlay"></div>
+
+  <button class="hero-sound-btn" id="soundToggle" aria-label="Bật âm thanh">
+    <i class="fas fa-volume-mute"></i>
+  </button>
+
+  <div class="hero-content">
+    <div class="section-label hero-label">Portfolio 2026</div>
+    <h1 class="hero-title">
+      TO<br>
+      <span>THANH</span><br>
+      TU
+    </h1>
+    <div class="hero-role">Video Editor &nbsp;/&nbsp; Storyteller</div>
+  </div>
+
+  <div class="hero-scroll">
+    <span>SCROLL</span>
+    <i class="fas fa-chevron-down"></i>
+  </div>
+</section>
+
+<!-- Ticker -->
+<div class="hero-band">
+  <div class="ticker-inner">
+    TO THANH TU &nbsp;&nbsp;--&nbsp;&nbsp; VIDEO EDITOR &nbsp;&nbsp;--&nbsp;&nbsp; PREMIERE PRO &nbsp;&nbsp;--&nbsp;&nbsp; CAPCUT &nbsp;&nbsp;--&nbsp;&nbsp; TALKING HEAD &nbsp;&nbsp;--&nbsp;&nbsp; GAMING EDIT &nbsp;&nbsp;--&nbsp;&nbsp; TO THANH TU &nbsp;&nbsp;--&nbsp;&nbsp; VIDEO EDITOR &nbsp;&nbsp;--&nbsp;&nbsp; PREMIERE PRO &nbsp;&nbsp;--&nbsp;&nbsp; CAPCUT &nbsp;&nbsp;--&nbsp;&nbsp; TALKING HEAD &nbsp;&nbsp;--&nbsp;&nbsp; GAMING EDIT &nbsp;&nbsp;--&nbsp;&nbsp;
+  </div>
+</div>
+
+<!-- About -->
+<section id="about">
+  <div class="about-left">
+    <div class="section-label">About Me</div>
+    <h2 class="section-title" style="margin-bottom: 28px;">
+      Xin chào, mình là <span style="color: var(--accent);">Tô Thanh Tú</span>
+    </h2>
+    <p class="hero-bio">
+      Một video editor 21 tuổi với đam mê tạo ra nhưng sản phẩm hình ảnh ấn tượng. Chuyên sâu vào editing nội dung, motion và storytelling.
+    </p>
+    <div class="stats-row">
+      <div class="stat-item">
+        <div class="stat-num">21</div>
+        <div class="stat-label">Tuổi</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">4+</div>
+        <div class="stat-label">Tháng kinh nghiệm</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">3+</div>
+        <div class="stat-label">Dự án hoàn thành</div>
+      </div>
+    </div>
+    <div class="skills-row">
+      <div class="skill-tag">Premiere Pro</div>
+      <div class="skill-tag">After Effects</div>
+      <div class="skill-tag">CapCut</div>
+      <div class="skill-tag">Talking Head</div>
+      <div class="skill-tag">Gaming Edit</div>
+      <div class="skill-tag">SFX / Subtitle</div>
+    </div>
+    <div class="social-row">
+      <a href="https://www.facebook.com/tu.thanh.798806" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://www.instagram.com/3t.thanhtu/" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="https://www.tiktok.com/@threet005" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+    </div>
+  </div>
+
+  <div class="about-right">
+    <div class="photo-frame">
+      <img src="img/selfie.jpg" alt="To Thanh Tu">
+      <div class="photo-badge">VIDEO<br>EDITOR</div>
+    </div>
+  </div>
+</section>
+
+<!-- Photo -->
+<section id="photo" class="section-wrap">
+  <div class="section-header">
+    <div>
+      <div class="section-label">Visual Work</div>
+      <h2 class="section-title">My Photos</h2>
+    </div>
+    <div class="section-count">04</div>
+  </div>
+
+  <!-- Photo Tabs -->
+  <div class="photo-tabs">
+    <button class="photo-tab active" data-tab="edited">
+      <span class="tab-num">01</span>
+      <span class="tab-label">Edited Photos</span>
+    </button>
+    <button class="photo-tab" data-tab="personal">
+      <span class="tab-num">02</span>
+      <span class="tab-label">Personal Gallery</span>
+    </button>
+  </div>
+
+  <!-- Edited Photos -->
+  <div class="photo-panel active" id="tab-edited">
+    <div class="photo-masonry">
+      <div class="photo-item">
+        <img src="img/spotify_vol1.png" alt="Spotify Vol 1">
+        <div class="photo-item-overlay">
+          <span class="photo-item-label">Spotify Vol.1</span>
+        </div>
+      </div>
+      <div class="photo-item">
+        <img src="img/headphone.png" alt="Headphone">
+        <div class="photo-item-overlay">
+          <span class="photo-item-label">Headphone</span>
+        </div>
+      </div>
+      <div class="photo-item">
+        <img src="img/collegt art.png" alt="College Art">
+        <div class="photo-item-overlay">
+          <span class="photo-item-label">College Art</span>
+        </div>
+      </div>
+      <div class="photo-item">
+        <img src="img/color_halftone copy.png" alt="Color Halftone">
+        <div class="photo-item-overlay">
+          <span class="photo-item-label">Halftone</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Personal Gallery -->
+  <div class="photo-panel" id="tab-personal">
+    <div class="photo-masonry">
+      <!-- Thêm ảnh personal của bạn vào đây -->
+      <div class="photo-item">
+  <img src="photoshoot/4.png" alt="...">
+  <div class="photo-item-overlay">
+    <span class="photo-item-label">Tên ảnh</span>
+  </div>
+</div>
+      <!-- <div class="photo-item photo-placeholder">
+        <div class="placeholder-inner">
+          <i class="fas fa-camera"></i>
+          <span><img src="photoshoot/2 copy.png" alt=""></span>
+        </div>
+      </div> -->
+      <div class="photo-item">
+  <img src="photoshoot/2 copy.png" alt="...">
+  <div class="photo-item-overlay">
+    <span class="photo-item-label">Tên ảnh</span>
+  </div>
+</div>
+        <!-- <div class="photo-item photo-placeholder">
+          <div class="placeholder-inner">
+            <i class="fas fa-camera"></i>
+            <span><img src="photoshoot/fog.png" alt=""></span>
+          </div>
+      </div> -->
+            <div class="photo-item">
+  <img src="photoshoot/fog.png" alt="...">
+  <div class="photo-item-overlay">
+    <span class="photo-item-label">Tên ảnh</span>
+  </div>
+</div>
+
+      <!-- <div class="photo-item photo-placeholder">
+        <div class="placeholder-inner">
+          <i class="fas fa-camera"></i>
+          <span><img src="photoshoot/1.png" alt=""></span>
+        </div>
+      </div> -->
+            <div class="photo-item">
+  <img src="photoshoot/1.png" alt="...">
+  <div class="photo-item-overlay">
+    <span class="photo-item-label">Tên ảnh</span>
+  </div>
+</div>
+      
+    </div>
+  </div>
+</section>
+
+<!-- Video -->
+<section id="video" class="section-wrap">
+  <div class="section-header">
+    <div>
+      <div class="section-label">Editing showcase</div>
+      <h2 class="section-title">My Videos</h2>
+    </div>
+    <div class="section-count">03</div>
+  </div>
+
+  <div class="video-grid">
+
+    <!-- YouTube -->
+    <div class="video-card">
+      <iframe
+        src="https://www.youtube.com/embed/O3FLmpN1EKU"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+      <div class="video-info">
+        <div class="video-num">01 / YOUTUBE</div>
+        <div class="video-title">Review Game</div>
+        <div class="video-desc">Gaming edit — storytelling + effects</div>
+      </div>
+    </div>
+
+    <!-- Drive 1: embed trực tiếp -->
+    <div class="video-card">
+      <iframe
+        src="https://drive.google.com/file/d/1TYY87fNpQKTBpQdFuce1fpsPrkLHWww9/preview"
+        allow="autoplay; fullscreen"
+        allowfullscreen>
+      </iframe>
+      <div class="video-info">
+        <div class="video-num">02 / TALKING HEAD</div>
+        <div class="video-title">Talking Head</div>
+        <div class="video-desc">Subtitle + SFX — talking head edit</div>
+      </div>
+    </div>
+
+    <!-- Drive 2: embed trực tiếp -->
+    <div class="video-card">
+      <iframe
+        src="https://drive.google.com/file/d/1IHfDp71n9ejlvRHuCU4Tna1Kar6u3ull/preview"
+        allow="autoplay; fullscreen"
+        allowfullscreen>
+      </iframe>
+      <div class="video-info">
+        <div class="video-num">03 / STORYTELLING</div>
+        <div class="video-title">Storytelling</div>
+        <div class="video-desc">Edit nâng cao — advanced cut</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- See More Button -->
+  <div class="see-more-wrap">
+    <a href="https://drive.google.com/drive/folders/1of79qP2IS-UlEgpxv_E0bLM1wTj-vKoK?usp=sharing" target="_blank" class="see-more-btn">
+      <span class="see-more-text">See More My Videos</span>
+      <span class="see-more-icon">
+        <i class="fab fa-google-drive"></i>
+      </span>
+      <span class="see-more-arrow">
+        <i class="fas fa-arrow-right"></i>
+      </span>
+    </a>
+  </div>
+
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-name">TO THANH TU</div>
+  <div class="footer-copy">2026 — Video Editor Portfolio</div>
+</footer>
+
+<!-- Lightbox -->
+<div class="lightbox-overlay" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose"><i class="fas fa-times"></i></button>
+  <div class="lightbox-inner" id="lightboxInner">
+    <img src="" alt="" id="lightboxImg">
+    <div class="lightbox-label" id="lightboxLabel"></div>
+  </div>
+</div>
+
+<script>
+  // Header background on scroll (transparent over hero -> solid when scrolled)
+  const siteHeader = document.getElementById('siteHeader');
+  function updateHeaderState() {
+    siteHeader.classList.toggle('scrolled', window.scrollY > 40);
+  }
+  window.addEventListener('scroll', updateHeaderState);
+  updateHeaderState();
+
+  // Hero video sound toggle
+  const heroVideo = document.querySelector('.hero-video');
+  const soundBtn  = document.getElementById('soundToggle');
+  if (heroVideo && soundBtn) {
+    soundBtn.addEventListener('click', function() {
+      heroVideo.muted = !heroVideo.muted;
+      soundBtn.innerHTML = heroVideo.muted
+        ? '<i class="fas fa-volume-mute"></i>'
+        : '<i class="fas fa-volume-up"></i>';
+      soundBtn.setAttribute('aria-label', heroVideo.muted ? 'Bật âm thanh' : 'Tắt âm thanh');
+    });
+  }
+
+  // Custom cursor
+  const dot = document.getElementById('cursorDot');
+  document.addEventListener('mousemove', e => {
+    dot.style.left = e.clientX + 'px';
+    dot.style.top  = e.clientY + 'px';
+  });
+
+  // Photo tab switching
+  document.querySelectorAll('.photo-tab').forEach(tab => {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.photo-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.photo-panel').forEach(p => p.classList.remove('active'));
+      this.classList.add('active');
+      document.getElementById('tab-' + this.dataset.tab).classList.add('active');
+    });
+  });
+
+  // Lightbox
+  const lightbox    = document.getElementById('lightbox');
+  const lbImg       = document.getElementById('lightboxImg');
+  const lbLabel     = document.getElementById('lightboxLabel');
+  const lbInner     = document.getElementById('lightboxInner');
+  const lbClose     = document.getElementById('lightboxClose');
+
+  function openLightbox(src, label) {
+    lbImg.src = src;
+    lbImg.alt = label;
+    lbLabel.textContent = label;
+    lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('active');
+    document.body.style.overflow = '';
+    setTimeout(() => { lbImg.src = ''; }, 300);
+  }
+
+  document.querySelectorAll('.photo-item').forEach(item => {
+    item.addEventListener('click', function() {
+      const img   = this.querySelector('img');
+      const label = this.querySelector('.photo-item-label');
+      if (img) openLightbox(img.src, label ? label.textContent : '');
+    });
+  });
+
+  // Close on overlay click (outside image)
+  lightbox.addEventListener('click', function(e) {
+    if (!lbInner.contains(e.target) || e.target === lightbox) closeLightbox();
+  });
+
+  lbClose.addEventListener('click', closeLightbox);
+
+  // Close on Escape
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+  });
+</script>
+</body>
+</html>

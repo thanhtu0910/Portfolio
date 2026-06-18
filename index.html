@@ -56,6 +56,12 @@
       justify-content: space-between;
       align-items: center;
       padding: 18px 48px;
+      background: transparent;
+      border-bottom: 1px solid transparent;
+      transition: background 0.35s ease, border-color 0.35s ease, backdrop-filter 0.35s ease;
+    }
+
+    header.scrolled {
       background: rgba(8,8,8,0.85);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
@@ -104,7 +110,6 @@
 
     /* ---- HERO BAND ---- */
     .hero-band {
-      margin-top: 61px;
       padding: 6px 48px;
       background: var(--accent);
       overflow: hidden;
@@ -123,6 +128,118 @@
     @keyframes ticker {
       from { transform: translateX(0); }
       to   { transform: translateX(-50%); }
+    }
+
+    /* ---- HERO VIDEO SECTION ---- */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 560px;
+      width: 100%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(15%) brightness(0.55) contrast(1.05);
+      z-index: 0;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(8,8,8,0.55) 0%, rgba(8,8,8,0.15) 40%, rgba(8,8,8,0.85) 100%);
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 0 24px;
+    }
+
+    .hero-label {
+      justify-content: center;
+      margin-bottom: 22px;
+    }
+
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(72px, 14vw, 180px);
+      line-height: 0.9;
+      letter-spacing: -2px;
+    }
+
+    .hero-title span { color: var(--accent); }
+
+    .hero-role {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      letter-spacing: 4px;
+      font-size: 13px;
+      color: #ddd;
+      margin-top: 22px;
+      text-transform: uppercase;
+    }
+
+    .hero-sound-btn {
+      position: absolute;
+      bottom: 28px;
+      right: 28px;
+      z-index: 3;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.25);
+      background: rgba(0,0,0,0.35);
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      backdrop-filter: blur(6px);
+      transition: all 0.25s ease;
+    }
+
+    .hero-sound-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255,255,255,0.65);
+      font-family: 'Syne', sans-serif;
+      font-size: 11px;
+      letter-spacing: 3px;
+      animation: heroScrollBounce 2s infinite;
+    }
+
+    @keyframes heroScrollBounce {
+      0%, 100% { transform: translate(-50%, 0); }
+      50% { transform: translate(-50%, 8px); }
+    }
+
+    @media (max-width: 600px) {
+      .hero-sound-btn { width: 40px; height: 40px; bottom: 20px; right: 16px; }
+      .hero-scroll { bottom: 18px; }
     }
 
     /* ---- ABOUT SECTION ---- */
@@ -808,14 +925,42 @@
 <div class="cursor-dot" id="cursorDot"></div>
 
 <!-- Header -->
-<header>
-  <a href="#about" class="logo">T.THANH TU</a>
+<header id="siteHeader">
+  <a href="#hero" class="logo">T.THANH TU</a>
   <nav>
+    <a href="#hero">Home</a>
     <a href="#about">About</a>
     <a href="#photo">Photo</a>
     <a href="#video">Video</a>
   </nav>
 </header>
+
+<!-- Hero Video -->
+<section id="hero" class="hero">
+  <video class="hero-video" autoplay muted loop playsinline preload="auto" poster="img/selfie.jpg">
+    <source src="vid/_introduce_4.mp4" type="video/mp4">
+  </video>
+  <div class="hero-overlay"></div>
+
+  <button class="hero-sound-btn" id="soundToggle" aria-label="Bật âm thanh">
+    <i class="fas fa-volume-mute"></i>
+  </button>
+
+  <div class="hero-content">
+    <div class="section-label hero-label">Portfolio 2026</div>
+    <h1 class="hero-title">
+      TO<br>
+      <span>THANH</span><br>
+      TU
+    </h1>
+    <div class="hero-role">Video Editor &nbsp;/&nbsp; Motion Graphics</div>
+  </div>
+
+  <div class="hero-scroll">
+    <span>SCROLL</span>
+    <i class="fas fa-chevron-down"></i>
+  </div>
+</section>
 
 <!-- Ticker -->
 <div class="hero-band">
@@ -827,14 +972,12 @@
 <!-- About -->
 <section id="about">
   <div class="about-left">
-    <div class="section-label">Portfolio 2026</div>
-    <h1 class="hero-name">
-      TO<br>
-      <span>THANH</span>
-      TU
-    </h1>
+    <div class="section-label">About Me</div>
+    <h2 class="section-title" style="margin-bottom: 28px;">
+      Xin chào, mình là <span style="color: var(--accent);">Tô Thanh Tú</span>
+    </h2>
     <p class="hero-bio">
-      Xin chào! Mình là <strong>Tô Thanh Tú</strong> — một video editor 21 tuổi với đam mê tạo ra nhưng sản phẩm hình ảnh ấn tượng. Chuyên sâu vào editing nội dung, motion và storytelling.
+      Một video editor 21 tuổi với đam mê tạo ra nhưng sản phẩm hình ảnh ấn tượng. Chuyên sâu vào editing nội dung, motion và storytelling.
     </p>
     <div class="stats-row">
       <div class="stat-item">
@@ -1064,6 +1207,27 @@
 </div>
 
 <script>
+  // Header background on scroll (transparent over hero -> solid when scrolled)
+  const siteHeader = document.getElementById('siteHeader');
+  function updateHeaderState() {
+    siteHeader.classList.toggle('scrolled', window.scrollY > 40);
+  }
+  window.addEventListener('scroll', updateHeaderState);
+  updateHeaderState();
+
+  // Hero video sound toggle
+  const heroVideo = document.querySelector('.hero-video');
+  const soundBtn  = document.getElementById('soundToggle');
+  if (heroVideo && soundBtn) {
+    soundBtn.addEventListener('click', function() {
+      heroVideo.muted = !heroVideo.muted;
+      soundBtn.innerHTML = heroVideo.muted
+        ? '<i class="fas fa-volume-mute"></i>'
+        : '<i class="fas fa-volume-up"></i>';
+      soundBtn.setAttribute('aria-label', heroVideo.muted ? 'Bật âm thanh' : 'Tắt âm thanh');
+    });
+  }
+
   // Custom cursor
   const dot = document.getElementById('cursorDot');
   document.addEventListener('mousemove', e => {
