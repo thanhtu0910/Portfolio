@@ -917,6 +917,253 @@
       .see-more-text { font-size: 11px; letter-spacing: 2px; padding: 14px 20px; }
       .see-more-icon, .see-more-arrow { padding: 14px 14px; }
     }
+
+    /* ---- MOTION GRAPHICS SECTION ---- */
+    .motion-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px;
+    }
+
+    /* Card dọc 9:16 chiếm full hàng bên trái,
+       card placeholder chiếm full hàng bên phải cùng hàng */
+    .motion-card {
+      position: relative;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      transition: border-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .motion-card:hover {
+      border-color: rgba(232,255,71,0.35);
+      transform: translateY(-4px);
+    }
+
+    /* --- video wrap mặc định 16:9 --- */
+    .motion-video-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #000;
+      overflow: hidden;
+    }
+
+    /* --- video wrap dọc 9:16 --- */
+    .motion-video-wrap.portrait {
+      aspect-ratio: 9/16;
+      max-height: 520px; /* giới hạn chiều cao để không quá dài */
+    }
+
+    .motion-video-wrap video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Play overlay */
+    .motion-play-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.42);
+      cursor: pointer;
+      transition: background 0.25s;
+    }
+
+    .motion-play-overlay:hover { background: rgba(0,0,0,0.2); }
+    .motion-play-overlay.hidden { display: none; }
+
+    .motion-play-btn {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 2px solid var(--accent);
+      background: rgba(8,8,8,0.65);
+      color: var(--accent);
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.25s, transform 0.2s;
+      backdrop-filter: blur(6px);
+    }
+
+    .motion-play-overlay:hover .motion-play-btn {
+      background: var(--accent);
+      color: #080808;
+      transform: scale(1.08);
+    }
+
+    /* Video controls bar */
+    .motion-controls {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 10px 14px 12px;
+      background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, transparent 100%);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+
+    .motion-video-wrap:hover .motion-controls { opacity: 1; }
+
+    .motion-ctrl-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 13px;
+      cursor: pointer;
+      padding: 4px 6px;
+      opacity: 0.85;
+      transition: color 0.2s, opacity 0.2s;
+    }
+
+    .motion-ctrl-btn:hover { color: var(--accent); opacity: 1; }
+
+    .motion-progress {
+      flex: 1;
+      height: 3px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 2px;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .motion-progress-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+      width: 0%;
+      transition: width 0.1s linear;
+      pointer-events: none;
+    }
+
+    .motion-time {
+      font-family: 'Syne', sans-serif;
+      font-size: 11px;
+      color: rgba(255,255,255,0.6);
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+
+    /* Card info */
+    .motion-info {
+      padding: 20px 22px 22px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .motion-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .motion-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 17px;
+      color: var(--text);
+      margin-bottom: 6px;
+      letter-spacing: -0.3px;
+    }
+
+    .motion-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .motion-tag {
+      flex-shrink: 0;
+      padding: 5px 12px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      font-family: 'Syne', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    /* Card 3 (dọc) + placeholder: cùng 1 hàng, chia đôi */
+    .motion-row-portrait {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      margin-top: 0; /* đã nằm trong motion-grid gap */
+    }
+
+    /* Card dọc: chiều cao khớp với portrait video */
+    .motion-card.portrait-card {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .motion-card.portrait-card .motion-video-wrap {
+      aspect-ratio: 9/16;
+      max-height: none;
+      flex: 1 1 auto;
+    }
+
+    /* Placeholder card: khớp chiều cao với card dọc bên cạnh */
+    .motion-card.placeholder {
+      border-style: dashed;
+      border-color: rgba(255,255,255,0.12);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      cursor: default;
+      background: transparent;
+    }
+
+    .motion-card.placeholder:hover {
+      border-color: rgba(232,255,71,0.2);
+      transform: none;
+    }
+
+    .placeholder-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .placeholder-text {
+      font-family: 'Syne', sans-serif;
+      font-size: 12px;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,0.18);
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 768px) {
+      .motion-grid { grid-template-columns: 1fr; }
+      .motion-row-portrait { grid-template-columns: 1fr; }
+    }
+
   </style>
 </head>
 <body>
@@ -930,8 +1177,9 @@
   <nav>
     <a href="#hero">Home</a>
     <a href="#about">About</a>
-    <a href="#photo">Photo</a>
     <a href="#video">Video</a>
+    <a href="#motion">Motion</a>
+    <a href="#photo">Photo</a>
   </nav>
 </header>
 
@@ -977,19 +1225,19 @@
       Xin chào, mình là <span style="color: var(--accent);">Tô Thanh Tú</span>
     </h2>
     <p class="hero-bio">
-      Một video editor 21 tuổi với đam mê tạo ra nhưng sản phẩm hình ảnh ấn tượng. Chuyên sâu vào editing nội dung, motion và storytelling.
+      Một video editor 20 tuổi với đam mê tạo ra nhưng sản phẩm hình ảnh ấn tượng. Chuyên sâu vào editing nội dung, motion và storytelling.
     </p>
     <div class="stats-row">
       <div class="stat-item">
-        <div class="stat-num">21</div>
+        <div class="stat-num">20</div>
         <div class="stat-label">Tuổi</div>
       </div>
       <div class="stat-item">
-        <div class="stat-num">4+</div>
+        <div class="stat-num">6+</div>
         <div class="stat-label">Tháng kinh nghiệm</div>
       </div>
       <div class="stat-item">
-        <div class="stat-num">3+</div>
+        <div class="stat-num">10+</div>
         <div class="stat-label">Dự án hoàn thành</div>
       </div>
     </div>
@@ -1013,6 +1261,127 @@
       <img src="img/selfie.jpg" alt="To Thanh Tu">
       <div class="photo-badge">VIDEO<br>EDITOR</div>
     </div>
+  </div>
+</section>
+
+<!-- Motion Graphics -->
+<section id="motion" class="section-wrap">
+  <div class="section-header">
+    <div>
+      <div class="section-label">Animation Work</div>
+      <h2 class="section-title">Motion Graphics</h2>
+    </div>
+    <div class="section-count">05</div>
+  </div>
+
+  <!-- Hàng 1: Card 1 + Card 2 (16:9) -->
+  <div class="motion-grid">
+    <!-- Card 1 -->
+    <div class="motion-card">
+      <div class="motion-video-wrap">
+        <video preload="metadata" loop>
+          <source src="motion/fifa.mp4" type="video/mp4">
+        </video>
+        <div class="motion-play-overlay" onclick="toggleMotionPlay(this)">
+          <div class="motion-play-btn"><i class="fas fa-play"></i></div>
+        </div>
+        <div class="motion-controls">
+          <button class="motion-ctrl-btn play-pause-btn" onclick="toggleMotionPlay(this.closest('.motion-video-wrap').querySelector('.motion-play-overlay'))">
+            <i class="fas fa-pause"></i>
+          </button>
+          <div class="motion-progress" onclick="seekMotion(event, this)">
+            <div class="motion-progress-fill"></div>
+          </div>
+          <span class="motion-time">0:00</span>
+          <button class="motion-ctrl-btn" onclick="toggleMotionMute(this)">
+            <i class="fas fa-volume-mute"></i>
+          </button>
+        </div>
+      </div>
+      <div class="motion-info">
+        <div>
+          <div class="motion-num">01 / AFTER EFFECTS</div>
+          <div class="motion-title">FIFA world cup 2026</div>
+          <div class="motion-desc">Học tập, nghiên cứu</div>
+        </div>
+        <div class="motion-tag">AE</div>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="motion-card">
+      <div class="motion-video-wrap">
+        <video preload="metadata" loop>
+          <source src="motion/SaaS star.mp4" type="video/mp4">
+        </video>
+        <div class="motion-play-overlay" onclick="toggleMotionPlay(this)">
+          <div class="motion-play-btn"><i class="fas fa-play"></i></div>
+        </div>
+        <div class="motion-controls">
+          <button class="motion-ctrl-btn play-pause-btn" onclick="toggleMotionPlay(this.closest('.motion-video-wrap').querySelector('.motion-play-overlay'))">
+            <i class="fas fa-pause"></i>
+          </button>
+          <div class="motion-progress" onclick="seekMotion(event, this)">
+            <div class="motion-progress-fill"></div>
+          </div>
+          <span class="motion-time">0:00</span>
+          <button class="motion-ctrl-btn" onclick="toggleMotionMute(this)">
+            <i class="fas fa-volume-mute"></i>
+          </button>
+        </div>
+      </div>
+      <div class="motion-info">
+        <div>
+          <div class="motion-num">02 / AFTER EFFECTS</div>
+          <div class="motion-title">SaaS</div>
+          <div class="motion-desc">Video được tạo ra với mục đích quảng bá sản phẩm SaaS</div>
+        </div>
+        <div class="motion-tag">AE</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hàng 2: Card 3 + Placeholder -->
+  <div class="motion-grid" style="margin-top: 28px;">
+
+    <!-- Card 3 — video dọc, scale vừa khung 16:9 -->
+    <div class="motion-card">
+      <div class="motion-video-wrap">
+        <video preload="metadata" loop style="object-fit: contain;">
+          <source src="motion/Phone 17 Pro Max Simple 2.mp4" type="video/mp4">
+        </video>
+        <div class="motion-play-overlay" onclick="toggleMotionPlay(this)">
+          <div class="motion-play-btn"><i class="fas fa-play"></i></div>
+        </div>
+        <div class="motion-controls">
+          <button class="motion-ctrl-btn play-pause-btn" onclick="toggleMotionPlay(this.closest('.motion-video-wrap').querySelector('.motion-play-overlay'))">
+            <i class="fas fa-pause"></i>
+          </button>
+          <div class="motion-progress" onclick="seekMotion(event, this)">
+            <div class="motion-progress-fill"></div>
+          </div>
+          <span class="motion-time">0:00</span>
+          <button class="motion-ctrl-btn" onclick="toggleMotionMute(this)">
+            <i class="fas fa-volume-mute"></i>
+          </button>
+        </div>
+      </div>
+      <div class="motion-info">
+        <div>
+          <div class="motion-num">03 / AFTER EFFECTS</div>
+          <div class="motion-title">3D motion</div>
+          <div class="motion-desc">Học tập theo MOMO</div>
+        </div>
+        <div class="motion-tag">AE</div>
+      </div>
+    </div>
+
+    <!-- Placeholder -->
+    <div class="motion-card placeholder">
+      <div class="placeholder-icon"><i class="fas fa-film"></i></div>
+      <div class="placeholder-text">Coming Soon</div>
+    </div>
+
   </div>
 </section>
 
@@ -1071,51 +1440,30 @@
   <!-- Personal Gallery -->
   <div class="photo-panel" id="tab-personal">
     <div class="photo-masonry">
-      <!-- Thêm ảnh personal của bạn vào đây -->
       <div class="photo-item">
-  <img src="photoshoot/4.png" alt="...">
-  <div class="photo-item-overlay">
-    <span class="photo-item-label">Tên ảnh</span>
-  </div>
-</div>
-      <!-- <div class="photo-item photo-placeholder">
-        <div class="placeholder-inner">
-          <i class="fas fa-camera"></i>
-          <span><img src="photoshoot/2 copy.png" alt=""></span>
+        <img src="photoshoot/4.png" alt="...">
+        <div class="photo-item-overlay">
+          <span class="photo-item-label">Tên ảnh</span>
         </div>
-      </div> -->
+      </div>
       <div class="photo-item">
-  <img src="photoshoot/2 copy.png" alt="...">
-  <div class="photo-item-overlay">
-    <span class="photo-item-label">Tên ảnh</span>
-  </div>
-</div>
-        <!-- <div class="photo-item photo-placeholder">
-          <div class="placeholder-inner">
-            <i class="fas fa-camera"></i>
-            <span><img src="photoshoot/fog.png" alt=""></span>
-          </div>
-      </div> -->
-            <div class="photo-item">
-  <img src="photoshoot/fog.png" alt="...">
-  <div class="photo-item-overlay">
-    <span class="photo-item-label">Tên ảnh</span>
-  </div>
-</div>
-
-      <!-- <div class="photo-item photo-placeholder">
-        <div class="placeholder-inner">
-          <i class="fas fa-camera"></i>
-          <span><img src="photoshoot/1.png" alt=""></span>
+        <img src="photoshoot/2 copy.png" alt="...">
+        <div class="photo-item-overlay">
+          <span class="photo-item-label">Tên ảnh</span>
         </div>
-      </div> -->
-            <div class="photo-item">
-  <img src="photoshoot/1.png" alt="...">
-  <div class="photo-item-overlay">
-    <span class="photo-item-label">Tên ảnh</span>
-  </div>
-</div>
-      
+      </div>
+      <div class="photo-item">
+        <img src="photoshoot/fog.png" alt="...">
+        <div class="photo-item-overlay">
+          <span class="photo-item-label">Tên ảnh</span>
+        </div>
+      </div>
+      <div class="photo-item">
+        <img src="photoshoot/1.png" alt="...">
+        <div class="photo-item-overlay">
+          <span class="photo-item-label">Tên ảnh</span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -1146,7 +1494,7 @@
       </div>
     </div>
 
-    <!-- Drive 1: embed trực tiếp -->
+    <!-- Drive 1 -->
     <div class="video-card">
       <iframe
         src="https://drive.google.com/file/d/1TYY87fNpQKTBpQdFuce1fpsPrkLHWww9/preview"
@@ -1160,7 +1508,7 @@
       </div>
     </div>
 
-    <!-- Drive 2: embed trực tiếp -->
+    <!-- Drive 2 -->
     <div class="video-card">
       <iframe
         src="https://drive.google.com/file/d/1IHfDp71n9ejlvRHuCU4Tna1Kar6u3ull/preview"
@@ -1207,7 +1555,6 @@
 </div>
 
 <script>
-  // Header background on scroll (transparent over hero -> solid when scrolled)
   const siteHeader = document.getElementById('siteHeader');
   function updateHeaderState() {
     siteHeader.classList.toggle('scrolled', window.scrollY > 40);
@@ -1215,7 +1562,6 @@
   window.addEventListener('scroll', updateHeaderState);
   updateHeaderState();
 
-  // Hero video sound toggle
   const heroVideo = document.querySelector('.hero-video');
   const soundBtn  = document.getElementById('soundToggle');
   if (heroVideo && soundBtn) {
@@ -1228,14 +1574,12 @@
     });
   }
 
-  // Custom cursor
   const dot = document.getElementById('cursorDot');
   document.addEventListener('mousemove', e => {
     dot.style.left = e.clientX + 'px';
     dot.style.top  = e.clientY + 'px';
   });
 
-  // Photo tab switching
   document.querySelectorAll('.photo-tab').forEach(tab => {
     tab.addEventListener('click', function() {
       document.querySelectorAll('.photo-tab').forEach(t => t.classList.remove('active'));
@@ -1245,12 +1589,11 @@
     });
   });
 
-  // Lightbox
-  const lightbox    = document.getElementById('lightbox');
-  const lbImg       = document.getElementById('lightboxImg');
-  const lbLabel     = document.getElementById('lightboxLabel');
-  const lbInner     = document.getElementById('lightboxInner');
-  const lbClose     = document.getElementById('lightboxClose');
+  const lightbox = document.getElementById('lightbox');
+  const lbImg    = document.getElementById('lightboxImg');
+  const lbLabel  = document.getElementById('lightboxLabel');
+  const lbInner  = document.getElementById('lightboxInner');
+  const lbClose  = document.getElementById('lightboxClose');
 
   function openLightbox(src, label) {
     lbImg.src = src;
@@ -1274,16 +1617,75 @@
     });
   });
 
-  // Close on overlay click (outside image)
   lightbox.addEventListener('click', function(e) {
     if (!lbInner.contains(e.target) || e.target === lightbox) closeLightbox();
   });
 
   lbClose.addEventListener('click', closeLightbox);
 
-  // Close on Escape
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') closeLightbox();
+  });
+
+  // ---- MOTION GRAPHICS VIDEO CONTROLS ----
+  function formatTime(s) {
+    const m = Math.floor(s / 60);
+    const sec = Math.floor(s % 60);
+    return m + ':' + String(sec).padStart(2, '0');
+  }
+
+  function toggleMotionPlay(overlay) {
+    const wrap = overlay.closest('.motion-video-wrap');
+    const video = wrap.querySelector('video');
+    const playBtn = overlay.querySelector('.motion-play-btn i');
+    const ctrlBtn = wrap.querySelector('.play-pause-btn i');
+
+    if (video.paused) {
+      video.play();
+      overlay.classList.add('hidden');
+      if (ctrlBtn) ctrlBtn.className = 'fas fa-pause';
+    } else {
+      video.pause();
+      overlay.classList.remove('hidden');
+      if (playBtn) playBtn.className = 'fas fa-play';
+      if (ctrlBtn) ctrlBtn.className = 'fas fa-play';
+    }
+  }
+
+  function toggleMotionMute(btn) {
+    const wrap = btn.closest('.motion-video-wrap');
+    const video = wrap.querySelector('video');
+    video.muted = !video.muted;
+    btn.querySelector('i').className = video.muted ? 'fas fa-volume-mute' : 'fas fa-volume-up';
+  }
+
+  function seekMotion(e, progressBar) {
+    const wrap = progressBar.closest('.motion-video-wrap');
+    const video = wrap.querySelector('video');
+    const rect = progressBar.getBoundingClientRect();
+    const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    video.currentTime = ratio * video.duration;
+  }
+
+  document.querySelectorAll('.motion-video-wrap video').forEach(video => {
+    video.addEventListener('timeupdate', function() {
+      const wrap = this.closest('.motion-video-wrap');
+      const fill = wrap.querySelector('.motion-progress-fill');
+      const time = wrap.querySelector('.motion-time');
+      if (this.duration) {
+        fill.style.width = (this.currentTime / this.duration * 100) + '%';
+        time.textContent = formatTime(this.currentTime);
+      }
+    });
+
+    video.addEventListener('ended', function() {
+      const wrap = this.closest('.motion-video-wrap');
+      const overlay = wrap.querySelector('.motion-play-overlay');
+      const ctrlBtn = wrap.querySelector('.play-pause-btn i');
+      overlay.classList.remove('hidden');
+      overlay.querySelector('i').className = 'fas fa-play';
+      if (ctrlBtn) ctrlBtn.className = 'fas fa-play';
+    });
   });
 </script>
 </body>
