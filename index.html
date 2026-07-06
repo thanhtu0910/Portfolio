@@ -300,6 +300,45 @@
       margin-bottom: 40px;
     }
 
+    .bio-lang-toggle {
+      display: inline-flex;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .bio-lang-btn {
+      padding: 6px 16px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      background: transparent;
+      font-family: 'Syne', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+
+    .bio-lang-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .bio-lang-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #0a0a0a;
+    }
+
+    .hero-bio-text {
+      display: none;
+    }
+
+    .hero-bio-text.active {
+      display: block;
+    }
+
     .stats-row {
       display: flex;
       gap: 40px;
@@ -1224,11 +1263,23 @@
     <h2 class="section-title" style="margin-bottom: 28px;">
       Hi, I'm <span style="color: var(--accent);">To Thanh Tu</span>
     </h2>
+    <div class="bio-lang-toggle">
+      <button type="button" class="bio-lang-btn" data-lang="en">EN</button>
+      <button type="button" class="bio-lang-btn active" data-lang="vi">VI</button>
+    </div>
     <p class="hero-bio">
-      Hi, I'm To Thanh Tu.
+      <span class="hero-bio-text" data-lang="en">
+        Hi, I'm To Thanh Tu.
 
 I'm an aspiring Video Editor with experience in video editing, motion graphics, and storytelling.
  Although I'm still growing in the industry, I'm passionate about learning, improving my skills, and creating high-quality content.
+      </span>
+      <span class="hero-bio-text active" data-lang="vi">
+        Xin chào, mình là Tô Thanh Tú.
+
+Mình là một Video Editor đang trên hành trình phát triển, có kinh nghiệm trong dựng phim, motion graphics và kể chuyện bằng hình ảnh.
+ Dù vẫn đang học hỏi thêm trong ngành, mình luôn đam mê trau dồi kỹ năng và tạo ra những sản phẩm chất lượng cao.
+      </span>
     </p>
     <div class="stats-row">
       <div class="stat-item">
@@ -1578,6 +1629,17 @@ I'm an aspiring Video Editor with experience in video editing, motion graphics, 
   }
 
   const dot = document.getElementById('cursorDot');
+  // Bio language toggle (EN/VI)
+  const bioLangBtns = document.querySelectorAll('.bio-lang-btn');
+  const bioTexts = document.querySelectorAll('.hero-bio-text');
+  bioLangBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const lang = this.dataset.lang;
+      bioLangBtns.forEach(b => b.classList.toggle('active', b === this));
+      bioTexts.forEach(t => t.classList.toggle('active', t.dataset.lang === lang));
+    });
+  });
+
   document.addEventListener('mousemove', e => {
     dot.style.left = e.clientX + 'px';
     dot.style.top  = e.clientY + 'px';
