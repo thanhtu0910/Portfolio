@@ -1435,9 +1435,35 @@ Mình là một Video Editor đang trên hành trình phát triển, có kinh ng
     </div>
 
     <!-- Placeholder -->
-    <div class="motion-card placeholder">
-      <div class="placeholder-icon"><i class="fas fa-film"></i></div>
-      <div class="placeholder-text">Coming Soon</div>
+    <div class="motion-card">
+      <div class="motion-video-wrap">
+        <video preload="metadata" loop style="object-fit: contain;">
+          <source src="motion/vol5_1.mp4" type="video/mp4">
+        </video>
+        <div class="motion-play-overlay" onclick="toggleMotionPlay(this)">
+          <div class="motion-play-btn"><i class="fas fa-play"></i></div>
+        </div>
+        <div class="motion-controls">
+          <button class="motion-ctrl-btn play-pause-btn" onclick="toggleMotionPlay(this.closest('.motion-video-wrap').querySelector('.motion-play-overlay'))">
+            <i class="fas fa-pause"></i>
+          </button>
+          <div class="motion-progress" onclick="seekMotion(event, this)">
+            <div class="motion-progress-fill"></div>
+          </div>
+          <span class="motion-time">0:00</span>
+          <button class="motion-ctrl-btn" onclick="toggleMotionMute(this)">
+            <i class="fas fa-volume-mute"></i>
+          </button>
+        </div>
+      </div>
+      <div class="motion-info">
+        <div>
+          <div class="motion-num">04 / AFTER EFFECTS</div>
+          <div class="motion-title">3D motion</div>
+          <div class="motion-desc">Tracking + Animation</div>
+        </div>
+        <div class="motion-tag">AE</div>
+      </div>
     </div>
 
   </div>
