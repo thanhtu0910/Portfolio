@@ -682,11 +682,22 @@
       transform: translateY(-4px);
     }
 
-    .video-card iframe {
+    .video-frame {
+      position: relative;
       width: 100%;
       aspect-ratio: 16/9;
+      overflow: hidden;
+    }
+
+    .video-frame iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 800px;
+      height: 450px;
       border: none;
-      display: block;
+      transform-origin: top left;
+      /* transform: scale() sẽ được set bằng JS để luôn khớp khung hiển thị */
     }
 
     .video-info {
@@ -1470,17 +1481,17 @@ Mình là một Video Editor đang trên hành trình phát triển, có kinh ng
 </section>
 
 <!-- Photo -->
-<section id="photo" class="section-wrap">
+<!-- <section id="photo" class="section-wrap">
   <div class="section-header">
     <div>
       <div class="section-label">Visual Work</div>
       <h2 class="section-title">My Photos</h2>
     </div>
     <div class="section-count">04</div>
-  </div>
+  </div> -->
 
   <!-- Photo Tabs -->
-  <div class="photo-tabs">
+  <!-- <div class="photo-tabs">
     <button class="photo-tab active" data-tab="edited">
       <span class="tab-num">01</span>
       <span class="tab-label">Edited Photos</span>
@@ -1489,10 +1500,10 @@ Mình là một Video Editor đang trên hành trình phát triển, có kinh ng
       <span class="tab-num">02</span>
       <span class="tab-label">Personal Gallery</span>
     </button>
-  </div>
+  </div> -->
 
   <!-- Edited Photos -->
-  <div class="photo-panel active" id="tab-edited">
+  <!-- <div class="photo-panel active" id="tab-edited">
     <div class="photo-masonry">
       <div class="photo-item">
         <img src="img/spotify_vol1.png" alt="Spotify Vol 1">
@@ -1519,10 +1530,10 @@ Mình là một Video Editor đang trên hành trình phát triển, có kinh ng
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <!-- Personal Gallery -->
-  <div class="photo-panel" id="tab-personal">
+  <!-- <div class="photo-panel" id="tab-personal">
     <div class="photo-masonry">
       <div class="photo-item">
         <img src="photoshoot/4.png" alt="...">
@@ -1549,9 +1560,8 @@ Mình là một Video Editor đang trên hành trình phát triển, có kinh ng
         </div>
       </div>
     </div>
-  </div>
-</section>
-
+  </div> 
+</section>-->
 <!-- Video -->
 <section id="video" class="section-wrap">
   <div class="section-header">
@@ -1566,11 +1576,13 @@ Mình là một Video Editor đang trên hành trình phát triển, có kinh ng
 
     <!-- YouTube -->
     <div class="video-card">
-      <iframe
-        src="https://drive.google.com/file/d/1X5N87_ufGOBUz2TcVsKjvWVB6A2Gqv3I/preview"
-        allow="autoplay; fullscreen"
-        allowfullscreen>
-      </iframe>
+      <div class="video-frame">
+        <iframe
+          src="https://drive.google.com/file/d/1X5N87_ufGOBUz2TcVsKjvWVB6A2Gqv3I/preview"
+          allow="autoplay; fullscreen"
+          allowfullscreen>
+        </iframe>
+      </div>
       <div class="video-info">
         <div class="video-num">01 / NIKE</div>
         <div class="video-title">Motion graphic</div>
@@ -1580,11 +1592,13 @@ Mình là một Video Editor đang trên hành trình phát triển, có kinh ng
 
     <!-- Drive 1 -->
     <div class="video-card">
-      <iframe
-        src="https://drive.google.com/file/d/1ayHLnQyUS5PPf4kLOyT15P6jFnvRQmTm/preview"
-        allow="autoplay; fullscreen"
-        allowfullscreen>
-      </iframe>
+      <div class="video-frame">
+        <iframe
+          src="https://drive.google.com/file/d/1ayHLnQyUS5PPf4kLOyT15P6jFnvRQmTm/preview"
+          allow="autoplay; fullscreen"
+          allowfullscreen>
+        </iframe>
+      </div>
       <div class="video-info">
         <div class="video-num">02 / TALKING HEAD</div>
         <div class="video-title">Talking Head</div>
@@ -1594,11 +1608,13 @@ Mình là một Video Editor đang trên hành trình phát triển, có kinh ng
 
     <!-- Drive 2 -->
     <div class="video-card">
-      <iframe
-        src="https://drive.google.com/file/d/1IHfDp71n9ejlvRHuCU4Tna1Kar6u3ull/preview"
-        allow="autoplay; fullscreen"
-        allowfullscreen>
-      </iframe>
+      <div class="video-frame">
+        <iframe
+          src="https://drive.google.com/file/d/1IHfDp71n9ejlvRHuCU4Tna1Kar6u3ull/preview"
+          allow="autoplay; fullscreen"
+          allowfullscreen>
+        </iframe>
+      </div>
       <div class="video-info">
         <div class="video-num">03 / STORYTELLING</div>
         <div class="video-title">Storytelling</div>
@@ -1721,6 +1737,20 @@ Mình là một Video Editor đang trên hành trình phát triển, có kinh ng
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') closeLightbox();
   });
+
+  // ---- SCALE GOOGLE DRIVE VIDEO FRAMES (giữ layout desktop, thanh tua ở dưới) ----
+  function scaleDriveFrames() {
+    document.querySelectorAll('.video-frame').forEach(function (frame) {
+      const iframe = frame.querySelector('iframe');
+      if (!iframe) return;
+      const scale = frame.clientWidth / 800; // 800px = độ rộng "desktop" cố định
+      iframe.style.transform = 'scale(' + scale + ')';
+    });
+  }
+  window.addEventListener('load', scaleDriveFrames);
+  window.addEventListener('resize', scaleDriveFrames);
+  window.addEventListener('orientationchange', scaleDriveFrames);
+  scaleDriveFrames();
 
   // ---- MOTION GRAPHICS VIDEO CONTROLS ----
   function formatTime(s) {

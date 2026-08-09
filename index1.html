@@ -300,6 +300,45 @@
       margin-bottom: 40px;
     }
 
+    .bio-lang-toggle {
+      display: inline-flex;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .bio-lang-btn {
+      padding: 6px 16px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      background: transparent;
+      font-family: 'Syne', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+
+    .bio-lang-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .bio-lang-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #0a0a0a;
+    }
+
+    .hero-bio-text {
+      display: none;
+    }
+
+    .hero-bio-text.active {
+      display: block;
+    }
+
     .stats-row {
       display: flex;
       gap: 40px;
@@ -643,11 +682,22 @@
       transform: translateY(-4px);
     }
 
-    .video-card iframe {
+    .video-frame {
+      position: relative;
       width: 100%;
       aspect-ratio: 16/9;
+      overflow: hidden;
+    }
+
+    .video-frame iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 800px;
+      height: 450px;
       border: none;
-      display: block;
+      transform-origin: top left;
+      /* transform: scale() sẽ được set bằng JS để luôn khớp khung hiển thị */
     }
 
     .video-info {
@@ -1222,23 +1272,42 @@
   <div class="about-left">
     <div class="section-label">About Me</div>
     <h2 class="section-title" style="margin-bottom: 28px;">
-      Xin chào, mình là <span style="color: var(--accent);">Tô Thanh Tú</span>
+      Hi, I'm <span style="color: var(--accent);">To Thanh Tu</span>
     </h2>
+    <div class="bio-lang-toggle">
+      <button type="button" class="bio-lang-btn" data-lang="en">EN</button>
+      <button type="button" class="bio-lang-btn active" data-lang="vi">VI</button>
+    </div>
     <p class="hero-bio">
-      Một video editor 20 tuổi với đam mê tạo ra nhưng sản phẩm hình ảnh ấn tượng. Chuyên sâu vào editing nội dung, motion và storytelling.
+      <span class="hero-bio-text" data-lang="en">
+        Hi, I'm To Thanh Tu.
+
+I'm an aspiring Video Editor with experience in video editing, motion graphics, and storytelling.
+ Although I'm still growing in the industry, I'm passionate about learning, improving my skills, and creating high-quality content.
+ <br>
+ contact me: tuantu091005@gmail.com
+      </span>
+      <span class="hero-bio-text active" data-lang="vi">
+        Xin chào, mình là Tô Thanh Tú.
+
+Mình là một Video Editor đang trên hành trình phát triển, có kinh nghiệm trong dựng phim, motion graphics và kể chuyện bằng hình ảnh.
+ Dù vẫn đang học hỏi thêm trong ngành, mình luôn đam mê trau dồi kỹ năng và tạo ra những sản phẩm chất lượng cao.
+ <br>
+ Liên hệ: tuantu091005@gmail.com
+      </span>
     </p>
     <div class="stats-row">
       <div class="stat-item">
         <div class="stat-num">20</div>
-        <div class="stat-label">Tuổi</div>
+        <div class="stat-label">Age</div>
       </div>
       <div class="stat-item">
         <div class="stat-num">6+</div>
-        <div class="stat-label">Tháng kinh nghiệm</div>
+        <div class="stat-label">Months of Experience</div>
       </div>
       <div class="stat-item">
         <div class="stat-num">10+</div>
-        <div class="stat-label">Dự án hoàn thành</div>
+        <div class="stat-label">Projects Completed</div>
       </div>
     </div>
     <div class="skills-row">
@@ -1280,7 +1349,7 @@
     <div class="motion-card">
       <div class="motion-video-wrap">
         <video preload="metadata" loop>
-          <source src="motion/fifa.mp4" type="video/mp4">
+          <source src="motion/wc.mp4" type="video/mp4">
         </video>
         <div class="motion-play-overlay" onclick="toggleMotionPlay(this)">
           <div class="motion-play-btn"><i class="fas fa-play"></i></div>
@@ -1302,7 +1371,7 @@
         <div>
           <div class="motion-num">01 / AFTER EFFECTS</div>
           <div class="motion-title">FIFA world cup 2026</div>
-          <div class="motion-desc">Học tập, nghiên cứu</div>
+          <div class="motion-desc">Personal practice project inspired by sports broadcast design.</div>
         </div>
         <div class="motion-tag">AE</div>
       </div>
@@ -1334,7 +1403,7 @@
         <div>
           <div class="motion-num">02 / AFTER EFFECTS</div>
           <div class="motion-title">SaaS</div>
-          <div class="motion-desc">Video được tạo ra với mục đích quảng bá sản phẩm SaaS</div>
+          <div class="motion-desc">Promotional motion graphics designed for a fictional SaaS product.</div>
         </div>
         <div class="motion-tag">AE</div>
       </div>
@@ -1348,7 +1417,7 @@
     <div class="motion-card">
       <div class="motion-video-wrap">
         <video preload="metadata" loop style="object-fit: contain;">
-          <source src="motion/Phone 17 Pro Max Simple 2.mp4" type="video/mp4">
+          <source src="motion/iphone.mp4" type="video/mp4">
         </video>
         <div class="motion-play-overlay" onclick="toggleMotionPlay(this)">
           <div class="motion-play-btn"><i class="fas fa-play"></i></div>
@@ -1370,33 +1439,59 @@
         <div>
           <div class="motion-num">03 / AFTER EFFECTS</div>
           <div class="motion-title">3D motion</div>
-          <div class="motion-desc">Học tập theo MOMO</div>
+          <div class="motion-desc">UI animation inspired by the MoMo app design.</div>
         </div>
         <div class="motion-tag">AE</div>
       </div>
     </div>
 
     <!-- Placeholder -->
-    <div class="motion-card placeholder">
-      <div class="placeholder-icon"><i class="fas fa-film"></i></div>
-      <div class="placeholder-text">Coming Soon</div>
+    <div class="motion-card">
+      <div class="motion-video-wrap">
+        <video preload="metadata" loop style="object-fit: contain;">
+          <source src="motion/vol5_1.mp4" type="video/mp4">
+        </video>
+        <div class="motion-play-overlay" onclick="toggleMotionPlay(this)">
+          <div class="motion-play-btn"><i class="fas fa-play"></i></div>
+        </div>
+        <div class="motion-controls">
+          <button class="motion-ctrl-btn play-pause-btn" onclick="toggleMotionPlay(this.closest('.motion-video-wrap').querySelector('.motion-play-overlay'))">
+            <i class="fas fa-pause"></i>
+          </button>
+          <div class="motion-progress" onclick="seekMotion(event, this)">
+            <div class="motion-progress-fill"></div>
+          </div>
+          <span class="motion-time">0:00</span>
+          <button class="motion-ctrl-btn" onclick="toggleMotionMute(this)">
+            <i class="fas fa-volume-mute"></i>
+          </button>
+        </div>
+      </div>
+      <div class="motion-info">
+        <div>
+          <div class="motion-num">04 / AFTER EFFECTS</div>
+          <div class="motion-title">3D motion</div>
+          <div class="motion-desc">Tracking + Animation</div>
+        </div>
+        <div class="motion-tag">AE</div>
+      </div>
     </div>
 
   </div>
 </section>
 
 <!-- Photo -->
-<section id="photo" class="section-wrap">
+<!-- <section id="photo" class="section-wrap">
   <div class="section-header">
     <div>
       <div class="section-label">Visual Work</div>
       <h2 class="section-title">My Photos</h2>
     </div>
     <div class="section-count">04</div>
-  </div>
+  </div> -->
 
   <!-- Photo Tabs -->
-  <div class="photo-tabs">
+  <!-- <div class="photo-tabs">
     <button class="photo-tab active" data-tab="edited">
       <span class="tab-num">01</span>
       <span class="tab-label">Edited Photos</span>
@@ -1405,10 +1500,10 @@
       <span class="tab-num">02</span>
       <span class="tab-label">Personal Gallery</span>
     </button>
-  </div>
+  </div> -->
 
   <!-- Edited Photos -->
-  <div class="photo-panel active" id="tab-edited">
+  <!-- <div class="photo-panel active" id="tab-edited">
     <div class="photo-masonry">
       <div class="photo-item">
         <img src="img/spotify_vol1.png" alt="Spotify Vol 1">
@@ -1435,39 +1530,38 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <!-- Personal Gallery -->
-  <div class="photo-panel" id="tab-personal">
+  <!-- <div class="photo-panel" id="tab-personal">
     <div class="photo-masonry">
       <div class="photo-item">
         <img src="photoshoot/4.png" alt="...">
         <div class="photo-item-overlay">
-          <span class="photo-item-label">Tên ảnh</span>
+          <span class="photo-item-label">Thuần Lương Pagoda </span>
         </div>
       </div>
       <div class="photo-item">
         <img src="photoshoot/2 copy.png" alt="...">
         <div class="photo-item-overlay">
-          <span class="photo-item-label">Tên ảnh</span>
+          <span class="photo-item-label"> Thuần Lương Pagoda </span>
         </div>
       </div>
       <div class="photo-item">
         <img src="photoshoot/fog.png" alt="...">
         <div class="photo-item-overlay">
-          <span class="photo-item-label">Tên ảnh</span>
+          <span class="photo-item-label">Hàm Lợn Mountain</span>
         </div>
       </div>
       <div class="photo-item">
         <img src="photoshoot/1.png" alt="...">
         <div class="photo-item-overlay">
-          <span class="photo-item-label">Tên ảnh</span>
+          <span class="photo-item-label">Thuần Lương Pagoda </span>
         </div>
       </div>
     </div>
-  </div>
-</section>
-
+  </div> 
+</section>-->
 <!-- Video -->
 <section id="video" class="section-wrap">
   <div class="section-header">
@@ -1482,25 +1576,29 @@
 
     <!-- YouTube -->
     <div class="video-card">
-      <iframe
-        src="https://www.youtube.com/embed/O3FLmpN1EKU"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen>
-      </iframe>
+      <div class="video-frame">
+        <iframe
+          src="https://drive.google.com/file/d/1X5N87_ufGOBUz2TcVsKjvWVB6A2Gqv3I/preview"
+          allow="autoplay; fullscreen"
+          allowfullscreen>
+        </iframe>
+      </div>
       <div class="video-info">
-        <div class="video-num">01 / YOUTUBE</div>
-        <div class="video-title">Review Game</div>
-        <div class="video-desc">Gaming edit — storytelling + effects</div>
+        <div class="video-num">01 / NIKE</div>
+        <div class="video-title">Motion graphic</div>
+        <div class="video-desc">Motion graphic + SFX — video ads</div>
       </div>
     </div>
 
     <!-- Drive 1 -->
     <div class="video-card">
-      <iframe
-        src="https://drive.google.com/file/d/1TYY87fNpQKTBpQdFuce1fpsPrkLHWww9/preview"
-        allow="autoplay; fullscreen"
-        allowfullscreen>
-      </iframe>
+      <div class="video-frame">
+        <iframe
+          src="https://drive.google.com/file/d/1ayHLnQyUS5PPf4kLOyT15P6jFnvRQmTm/preview"
+          allow="autoplay; fullscreen"
+          allowfullscreen>
+        </iframe>
+      </div>
       <div class="video-info">
         <div class="video-num">02 / TALKING HEAD</div>
         <div class="video-title">Talking Head</div>
@@ -1510,11 +1608,13 @@
 
     <!-- Drive 2 -->
     <div class="video-card">
-      <iframe
-        src="https://drive.google.com/file/d/1IHfDp71n9ejlvRHuCU4Tna1Kar6u3ull/preview"
-        allow="autoplay; fullscreen"
-        allowfullscreen>
-      </iframe>
+      <div class="video-frame">
+        <iframe
+          src="https://drive.google.com/file/d/1IHfDp71n9ejlvRHuCU4Tna1Kar6u3ull/preview"
+          allow="autoplay; fullscreen"
+          allowfullscreen>
+        </iframe>
+      </div>
       <div class="video-info">
         <div class="video-num">03 / STORYTELLING</div>
         <div class="video-title">Storytelling</div>
@@ -1575,6 +1675,17 @@
   }
 
   const dot = document.getElementById('cursorDot');
+  // Bio language toggle (EN/VI)
+  const bioLangBtns = document.querySelectorAll('.bio-lang-btn');
+  const bioTexts = document.querySelectorAll('.hero-bio-text');
+  bioLangBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const lang = this.dataset.lang;
+      bioLangBtns.forEach(b => b.classList.toggle('active', b === this));
+      bioTexts.forEach(t => t.classList.toggle('active', t.dataset.lang === lang));
+    });
+  });
+
   document.addEventListener('mousemove', e => {
     dot.style.left = e.clientX + 'px';
     dot.style.top  = e.clientY + 'px';
@@ -1626,6 +1737,20 @@
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') closeLightbox();
   });
+
+  // ---- SCALE GOOGLE DRIVE VIDEO FRAMES (giữ layout desktop, thanh tua ở dưới) ----
+  function scaleDriveFrames() {
+    document.querySelectorAll('.video-frame').forEach(function (frame) {
+      const iframe = frame.querySelector('iframe');
+      if (!iframe) return;
+      const scale = frame.clientWidth / 800; // 800px = độ rộng "desktop" cố định
+      iframe.style.transform = 'scale(' + scale + ')';
+    });
+  }
+  window.addEventListener('load', scaleDriveFrames);
+  window.addEventListener('resize', scaleDriveFrames);
+  window.addEventListener('orientationchange', scaleDriveFrames);
+  scaleDriveFrames();
 
   // ---- MOTION GRAPHICS VIDEO CONTROLS ----
   function formatTime(s) {
