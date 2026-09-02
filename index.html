@@ -140,6 +140,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      transform-origin: center center;
+      will-change: transform, filter, opacity;
     }
 
     .hero-video {
@@ -1661,6 +1663,24 @@ Mình là một Video Editor đang trên hành trình phát triển, có kinh ng
   }
   window.addEventListener('scroll', updateHeaderState);
   updateHeaderState();
+
+  // ---- HERO SHRINK + BLUR ON SCROLL ----
+  const heroSection = document.querySelector('.hero');
+  const heroScrollRange = () => window.innerHeight * 0.9; // hiệu ứng hoàn tất sau ~0.9 màn hình cuộn
+
+  function updateHeroScrollEffect() {
+    const progress = Math.min(window.scrollY / heroScrollRange(), 1); // 0 -> 1
+    const scale = 1 - progress * 0.18;   // co nhỏ dần còn ~82%
+    const blur = progress * 10;          // mờ dần tới 10px
+    const opacity = 1 - progress * 0.35; // mờ nhẹ thêm bằng opacity
+    heroSection.style.transform = `scale(${scale})`;
+    heroSection.style.filter = `blur(${blur}px)`;
+    heroSection.style.opacity = opacity;
+  }
+
+  window.addEventListener('scroll', () => requestAnimationFrame(updateHeroScrollEffect));
+  window.addEventListener('resize', updateHeroScrollEffect);
+  updateHeroScrollEffect();
 
   const heroVideo = document.querySelector('.hero-video');
   const soundBtn  = document.getElementById('soundToggle');
